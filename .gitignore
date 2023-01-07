@@ -1,0 +1,12 @@
+bin/
+obj/
+.vs/
+/TicketSystemDB/*.mdf
+/TicketSystemDB/*.ldf
+node_modules/
+/TicketSystem/wwwroot/*css
+/TicketSystem/wwwroot/*js
+/TicketSystem/wwwroot/*map
+/TicketSystem/wwwroot/webpack.assets.json
+/packages
+/libs
