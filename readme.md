@@ -1,3 +1,7 @@
+# Raft Shark Plugin
+
+A small BepInEx plugin to mod the Raft game with more sharks
+
 # BepInEx
 
 [BepInEx](https://docs.bepinex.dev)
@@ -61,4 +65,5 @@ Used Tools->IlSpy to open Assembly-CSharp.dll
 # Documentation
 
 [Harmony](https://harmony.pardeike.net/articles/intro.html)
+
 [HarmonyX](https://github.com/BepInEx/HarmonyX)
