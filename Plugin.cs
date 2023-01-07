@@ -40,4 +40,16 @@ public class Plugin : BaseUnityPlugin
         }
 
     }
+
+    // increase damage shark does
+    [HarmonyPatch(typeof(AI_State_Attack_Entity_Shark), "Start")]
+    class SharkAttackPatch
+    {
+        [HarmonyPrefix]
+        static void setAttackPlayerDamage(ref int ____attackPlayerDamage)
+        {
+            ____attackPlayerDamage = 100;
+        }
+
+    }
 }
