@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Unity.Mono;
 using HarmonyLib;
+using UnityEngine;
 
 namespace RaftSharkPlugin;
 
@@ -20,7 +21,7 @@ public class Plugin : BaseUnityPlugin
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(AI_State_Decay_Shark), "SpawnAdditionalShark")]
-        static bool setSpawnAdditionalShark(ref bool __result)
+        static bool SetSpawnAdditionalShark(ref bool __result)
         {
             __result = true;
             return false;
@@ -33,23 +34,33 @@ public class Plugin : BaseUnityPlugin
     class SharkPatch
     {
         [HarmonyPostfix]
-        static void Start(Network_Host_Entities __instance)
+        static void Start(Network_Host_Entities __instance, bool ___spawnShark, int ___sharkCount)
         {
-            __instance.CreateAINetworkBehaviour(AI_NetworkBehaviourType.Shark, __instance.GetSharkSpawnPosition());
-            __instance.CreateAINetworkBehaviour(AI_NetworkBehaviourType.Shark, __instance.GetSharkSpawnPosition());
-        }
+            Debug.Log($"SpawnSharks {___spawnShark} - New Game {GameManager.IsInNewGame} - QuickStart {GameManager.QuickStartGame}");
 
+            // annoyingly none of these shark counters actually show the count of sharks - maybe they have not been set at this point?
+            AI_NetworkBehavior_Shark[] array= UnityEngine.Object.FindObjectsOfType<AI_NetworkBehavior_Shark>();
+            Debug.Log($"Sharks {__instance.SharkCount}, array of sharks {array.Length} - again shark count {___sharkCount}");
+
+            if ((GameManager.IsInNewGame || GameManager.QuickStartGame) && ___spawnShark)
+            {
+                Debug.Log($"Sharks arrive...");
+
+                __instance.CreateAINetworkBehaviour(AI_NetworkBehaviourType.Shark, __instance.GetSharkSpawnPosition());
+                __instance.CreateAINetworkBehaviour(AI_NetworkBehaviourType.Shark, __instance.GetSharkSpawnPosition());
+            }
+        }
     }
 
-    // increase damage shark does
+    // make sharks deadly - fast and lots of damage
     [HarmonyPatch(typeof(AI_State_Attack_Entity_Shark), "Start")]
     class SharkAttackPatch
     {
         [HarmonyPrefix]
-        static void setAttackPlayerDamage(ref int ____attackPlayerDamage)
+        static void SetAttackPlayerDamage(ref int ____attackPlayerDamage, ref float ___attackSwimSpeedMultiplier)
         {
-            ____attackPlayerDamage = 100;
+            ____attackPlayerDamage = 200;
+            ___attackSwimSpeedMultiplier = 3f;
         }
-
     }
 }
