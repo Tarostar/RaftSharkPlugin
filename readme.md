@@ -38,15 +38,19 @@ In the root create a libs folder and add the following dlls.
 
 From Raft copy:
 
+```
 Assembly-CSharp.dll
 Assembly-CSharp-firstpass.dll
 UnityEngine.CoreModule.dll
 UnityEngine.dll
+```
 
 From BepInEx under Raft copy:
 
+```
 0Harmony.dll
 BepInEx.Core.dll
+```
 
 ## Add DLL references 
 
